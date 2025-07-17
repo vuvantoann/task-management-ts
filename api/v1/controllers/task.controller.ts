@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import Task from '../models/task.model'
+import paginationHelper from '../../../helper/pagination'
 
 export const index = async (req: Request, res: Response) => {
   // lọc theo trạng thái
@@ -23,10 +24,28 @@ export const index = async (req: Request, res: Response) => {
     const sortKey = req.query.sortKey.toString()
     sort[sortKey] = req.query.sortValue
   }
-  const tasks = await Task.find(find).sort(sort)
+  // kết thúc
+
+  // Phân trang
+
+  const countTasks = await Task.countDocuments(find)
+  let objectPagination = paginationHelper(
+    {
+      limitItem: 2,
+      currentPage: 1,
+    },
+    req.query,
+    countTasks
+  )
+  const tasks = await Task.find(find)
+    .sort(sort)
+    .limit(objectPagination.limitItem)
+    .skip(objectPagination.skip)
 
   res.json(tasks)
 }
+
+//[PATCH]/api/v1/tasks/detail/:id
 export const detail = async (req: Request, res: Response) => {
   const id = req.params.id
   const task = await Task.findOne({
