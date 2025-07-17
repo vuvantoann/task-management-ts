@@ -1,12 +1,14 @@
 import { Request, Response } from 'express'
 import Task from '../models/task.model'
 import paginationHelper from '../../../helper/pagination'
+import searchHelper from '../../../helper/search'
 
 export const index = async (req: Request, res: Response) => {
   // lọc theo trạng thái
   interface Find {
     deleted: boolean
     status?: string
+    title?: RegExp
   }
 
   const find: Find = {
@@ -37,6 +39,17 @@ export const index = async (req: Request, res: Response) => {
     req.query,
     countTasks
   )
+
+  // kết thúc
+
+  // Tìm kiếm
+
+  const objectSearch = searchHelper(req.query)
+  if (objectSearch.regex) {
+    find.title = objectSearch.regex
+  }
+  // kết thúc
+
   const tasks = await Task.find(find)
     .sort(sort)
     .limit(objectPagination.limitItem)
