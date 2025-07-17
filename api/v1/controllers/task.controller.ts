@@ -122,3 +122,23 @@ export const changeMulti = async (req: Request, res: Response) => {
     })
   }
 }
+
+//[POST]/api/v1/tasks/create
+export const create = async (req: Request, res: Response) => {
+  try {
+    const newTask = new Task(req.body)
+    const data = await newTask.save()
+
+    return res.json({
+      code: 200,
+      message: 'tạo sản phẩm thành công!',
+      data: data,
+    })
+  } catch (error) {
+    console.error('Lỗi changeStatus:', error)
+    return res.status(400).json({
+      code: 400,
+      message: 'Không tồn tại!',
+    })
+  }
+}
