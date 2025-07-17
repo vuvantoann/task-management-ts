@@ -90,3 +90,26 @@ export const login = async (req: Request, res: Response) => {
     })
   }
 }
+
+//[get]/api/v1/user/detail/:id
+
+export const detail = async (req: Request, res: Response) => {
+  try {
+    const id: string = req.params.id
+    const infoUser = await User.findOne({
+      _id: id,
+      deleted: false,
+    }).select('-password -token')
+    res.json({
+      code: 200,
+      message: 'thành công',
+      infoUser: infoUser,
+    })
+  } catch (error) {
+    console.error('Lỗi changeStatus:', error)
+    return res.status(400).json({
+      code: 400,
+      message: 'Không tồn tại!',
+    })
+  }
+}
