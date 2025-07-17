@@ -142,3 +142,22 @@ export const create = async (req: Request, res: Response) => {
     })
   }
 }
+
+//[POST]/api/v1/tasks/edit
+export const edit = async (req: Request, res: Response) => {
+  try {
+    const id: string = req.params.id
+
+    await Task.updateOne({ _id: id }, req.body)
+    res.json({
+      code: 200,
+      message: 'chỉnh sửa sản phẩm thành công',
+    })
+  } catch (error) {
+    console.error('Lỗi changeStatus:', error)
+    return res.status(400).json({
+      code: 400,
+      message: 'Không tồn tại!',
+    })
+  }
+}
