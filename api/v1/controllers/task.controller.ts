@@ -67,3 +67,27 @@ export const detail = async (req: Request, res: Response) => {
   })
   res.json(task)
 }
+
+//[PATCH]/api/v1/tasks/change-status/:id
+export const changeStatus = async (req: Request, res: Response) => {
+  try {
+    const id: string = req.params.id
+    const status: string = req.body.status
+
+    console.log(id)
+    console.log(status)
+
+    await Task.updateOne({ _id: id }, { status: status })
+
+    return res.json({
+      code: 200,
+      message: 'Cập nhật trạng thái thành công!',
+    })
+  } catch (error) {
+    console.error('Lỗi changeStatus:', error)
+    return res.status(400).json({
+      code: 400,
+      message: 'Không tồn tại!',
+    })
+  }
+}

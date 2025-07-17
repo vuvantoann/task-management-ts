@@ -7,7 +7,12 @@ dotenv.config()
 database.connect()
 const app: Express = express()
 const port: string | number = process.env.PORT || 3000
+
+app.use(express.json()) // Thêm dòng này
+//app.use(express.urlencoded({ extended: true }))
+
 routesV1(app)
+
 app.listen(port, () => {
   console.log('lắng nghe thành công ')
 })
