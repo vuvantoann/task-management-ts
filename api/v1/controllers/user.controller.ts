@@ -91,19 +91,14 @@ export const login = async (req: Request, res: Response) => {
   }
 }
 
-//[get]/api/v1/user/detail/:id
+//[get]/api/v1/user/detail
 
 export const detail = async (req: Request, res: Response) => {
   try {
-    const id: string = req.params.id
-    const infoUser = await User.findOne({
-      _id: id,
-      deleted: false,
-    }).select('-password -token')
     res.json({
       code: 200,
       message: 'thành công',
-      infoUser: infoUser,
+      infoUser: req['user'],
     })
   } catch (error) {
     console.error('Lỗi changeStatus:', error)
