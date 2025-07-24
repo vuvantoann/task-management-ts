@@ -11,7 +11,7 @@ export const requireAuth = async (
     const infoUser = await User.findOne({
       token: token,
       deleted: false,
-    }).select('-password -token')
+    }).select('-password ')
 
     if (!infoUser) {
       res.json({

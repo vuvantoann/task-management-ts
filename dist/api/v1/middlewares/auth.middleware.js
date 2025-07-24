@@ -20,7 +20,7 @@ const requireAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
         const infoUser = yield user_model_1.default.findOne({
             token: token,
             deleted: false,
-        }).select('-password -token');
+        }).select('-password ');
         if (!infoUser) {
             res.json({
                 code: 400,
